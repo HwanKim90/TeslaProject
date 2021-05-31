@@ -1042,7 +1042,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610137688600112602}
-  m_LocalRotation: {x: 0.13514985, y: 0.00000023610785, z: -0.00000003226418, w: 0.9908252}
+  m_LocalRotation: {x: 0.13515356, y: 0, z: 0, w: 0.9908247}
   m_LocalPosition: {x: -0.33488503, y: 0.76956373, z: 0.64645463}
   m_LocalScale: {x: 1.0000002, y: 0.9999999, z: 1.0000001}
   m_Children:
@@ -1051,7 +1051,7 @@ Transform:
   - {fileID: 1607223033203630188}
   m_Father: {fileID: 1607630933480894972}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15.535, y: 0, z: 0}
 --- !u!1 &1610138838219091004
 GameObject:
   m_ObjectHideFlags: 0
@@ -2387,7 +2387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e4ae871357e044caaf645d613b6f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  driveType: 1
+  driveType: 2
   wheelCollider:
   - {fileID: 1465700540369692552}
   - {fileID: 1466468685753878474}
@@ -2398,17 +2398,46 @@ MonoBehaviour:
   - {fileID: 1610210212300165894}
   - {fileID: 1610078772552323048}
   - {fileID: 1610441939303434108}
-  slips:
-  - 0
-  - 0
-  - 0
-  - 0
+  gears:
+  - 2
+  - 1.7
+  - 1.3
+  - 0.9
+  - 0.4
   centerOfMess: {fileID: 1606190404}
-  torque: 10000
-  radius: 3
+  totalPower: 0
+  enginePower:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 115.1272
+      value: 262.2973
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 5927.261
+      value: 52.33383
+      inSlope: -0.6747373
+      outSlope: -0.6747373
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.02587495
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   KPH: 0
+  wheelsRPM: 0
+  engineRPM: 0
+  gearNum: 0
+  radius: 3
   downForce: 50
   brakePower: 50000
+  boostPower: 10000
 --- !u!114 &1240664099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2424,6 +2453,7 @@ MonoBehaviour:
   accel: 0
   steer: 0
   brake: 0
+  boost: 0
 --- !u!1 &1610210212300165894
 GameObject:
   m_ObjectHideFlags: 0
@@ -13913,7 +13943,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4765619257011812148}
   m_Layer: 0
-  m_Name: RMCar01_rpmArrow (1)
+  m_Name: RMCar01_SpeedArrow1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13926,7 +13956,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4943949949037598565}
-  m_LocalRotation: {x: 0.13435923, y: -0.014631673, z: 0.10726631, w: 0.9850013}
+  m_LocalRotation: {x: 0.13406256, y: -0.017138131, z: 0.1256414, w: 0.9828264}
   m_LocalPosition: {x: -0.4549, y: 0.74116, z: 0.60446}
   m_LocalScale: {x: 0.7815944, y: 0.78159404, z: 0.7815943}
   m_Children:
@@ -13935,4 +13965,4 @@ Transform:
   - {fileID: 2614558637190723950}
   m_Father: {fileID: 1607630933480894972}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 15.535, y: 0, z: 12.43}
+  m_LocalEulerAnglesHint: {x: 15.535, y: 0, z: 14.57}

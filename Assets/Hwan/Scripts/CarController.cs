@@ -35,19 +35,18 @@ public class CarController : MonoBehaviour
     float smoothTime = 0.01f;
 
     InputManager inputManager;
-    Rigidbody rigidbody;
+    Rigidbody rb;
    
     void Start()
     {
         inputManager = GetComponent<InputManager>();
-        rigidbody = GetComponent<Rigidbody>();
-        rigidbody.centerOfMass = centerOfMess.transform.localPosition;
+        rb = GetComponent<Rigidbody>();
+        rb.centerOfMass = centerOfMess.transform.localPosition;
     }
 
     private void FixedUpdate()
     {
         animateWheels();
-        //MoveVehicle();
         SteerVehicle();
         AddDownForce();
         //GetFriction();
@@ -62,6 +61,8 @@ public class CarController : MonoBehaviour
         totalPower = enginePower.Evaluate(engineRPM) * gears[gearNum] * inputManager.accel;
         float velocity = 0.0f;
         engineRPM = Mathf.SmoothDamp(engineRPM, Mathf.Abs(wheelsRPM) * 3.6f * gears[gearNum], ref velocity, smoothTime);
+
+        MoveVehicle();
     }
 
     void WheelRPM()
@@ -75,20 +76,20 @@ public class CarController : MonoBehaviour
             R++;
         }
         wheelsRPM = (R != 0) ? sum / R : 0;
+        
     }
 
     void GearShifter()
     {
+        gearNum = Mathf.Clamp(gearNum, 0, 4);
         if (Input.GetKeyDown(KeyCode.Alpha2)) gearNum++;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) gearNum--;
+        if (Input.GetKeyDown(KeyCode.Alpha3)) gearNum--;
     }
 
     public void MoveVehicle()
     {
-        
-
         // rigidbody 속력을 KPH로 바꿔주는 공식 3.6은 (60 * 60 / 1000)
-        KPH = rigidbody.velocity.magnitude * 3.6f;
+        KPH = rb.velocity.magnitude * 3.6f;
 
         if (driveType == DriveType.AllWheelDrive)
         {
@@ -127,7 +128,7 @@ public class CarController : MonoBehaviour
         // 부스트
         if (inputManager.boost)
         {
-            rigidbody.AddRelativeForce(Vector3.forward * boostPower);
+            rb.AddRelativeForce(Vector3.forward * boostPower);
         }
         
     }
@@ -178,7 +179,7 @@ public class CarController : MonoBehaviour
 
     void AddDownForce()
     {
-        rigidbody.AddForce(-transform.up * downForce * rigidbody.velocity.magnitude);
+        rb.AddForce(-transform.up * downForce * rb.velocity.magnitude);
     }
     
     void GetFriction()
