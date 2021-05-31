@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class CarController : MonoBehaviour
+public class CarController : MonoBehaviourPun, IPunObservable
 {
     public enum DriveType
     {
@@ -36,7 +37,24 @@ public class CarController : MonoBehaviour
 
     InputManager inputManager;
     Rigidbody rb;
-   
+
+    // Æ÷Åæ°ü·Ã
+    //public GameObject myCar;
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+
+        if (stream.IsReading)
+        {
+
+        }
+    }
+
     void Start()
     {
         inputManager = GetComponent<InputManager>();
@@ -191,4 +209,6 @@ public class CarController : MonoBehaviour
             slips[i] = wheelHit.forwardSlip;
         }
     }
+
+    
 }
