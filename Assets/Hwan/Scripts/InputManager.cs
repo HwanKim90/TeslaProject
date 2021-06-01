@@ -20,7 +20,7 @@ public class InputManager : MonoBehaviour
     public bool ovrBoost;
     public bool handleGrabed;
 
-    float wheelSpeed = 5f;
+    float wheelSpeed = 4f;
     Transform gripedSteer;
     public Transform gripedSteerRight;
 
@@ -34,14 +34,14 @@ public class InputManager : MonoBehaviour
         ovrAccel = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.RTouch);
         ovrSteer = -ovrRightHand.transform.localPosition.y * wheelSpeed; 
         ovrBrake = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.LTouch) != 0 ? true : false;
-        ovrBoost = OVRInput.GetDown(OVRInput.Button.One);
+        ovrBoost = OVRInput.Get(OVRInput.Button.One);
 
         GripSteering();
     }
 
     public void GripSteering()
     {
-        if (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0)
+        if (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, OVRInput.Controller.RTouch) != 0)
         {
             print("´©¸§");
             int layer = 1 << LayerMask.NameToLayer("Steer");
@@ -54,7 +54,6 @@ public class InputManager : MonoBehaviour
                
                 ovrRightHand.transform.SetParent(SteeringWheel.transform);
                 ovrLeftHand.transform.SetParent(SteeringWheel.transform);
-                //ovrRightHand.transform.localPosition = gripedSteerRight.transform.localPosition;
             }
         }
         else
