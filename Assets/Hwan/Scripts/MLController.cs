@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class CarController : MonoBehaviourPun, IPunObservable
+public class MLController : MonoBehaviourPun, IPunObservable
 {
     public enum DriveType
     {
@@ -77,7 +77,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
     {
         WheelRPM();
 
-        if (inputManager.handleGrabed)
+        if (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, OVRInput.Controller.RTouch) != 0)
         {
             // vr
             totalPower = enginePower.Evaluate(engineRPM) * gears[gearNum] * inputManager.ovrAccel;
@@ -159,7 +159,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
         }
 
         // ºÎ½ºÆ®
-        if (inputManager.boost || inputManager.ovrBoost)
+        if (inputManager.boost)
         {
             rb.AddRelativeForce(Vector3.forward * boostPower);
         }
@@ -177,7 +177,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
             wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.steer;
             wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.steer;
 
-            if (inputManager.handleGrabed)
+            if (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, OVRInput.Controller.RTouch) != 0)
             {
                 wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.ovrSteer;
                 wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.ovrSteer;
@@ -190,7 +190,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
             wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.steer;
             wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.steer;
 
-            if (inputManager.handleGrabed)
+            if (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, OVRInput.Controller.RTouch) != 0)
             {
                 wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.ovrSteer;
                 wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.ovrSteer;
