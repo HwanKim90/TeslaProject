@@ -40,7 +40,11 @@ public class CarController : MonoBehaviourPun, IPunObservable
     Rigidbody rb;
 
     // 포톤관련
-    //public GameObject myCar;
+    public GameObject cameraRig;
+    Vector3 otherCarPos;
+    Quaternion otherCarRot;
+
+    public GameObject childrenParent;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -52,25 +56,49 @@ public class CarController : MonoBehaviourPun, IPunObservable
 
         if (stream.IsReading)
         {
-
+            otherCarPos = (Vector3)stream.ReceiveNext();
+            otherCarRot = (Quaternion)stream.ReceiveNext();
         }
     }
 
     void Start()
     {
+        //마스터에서만!!
+        //포지션 얻어오기
+        if(PhotonNetwork.IsMasterClient)
+        {
+            Vector3 pos = GameManager.instance.GetEmptyStartPos();
+            photonView.RPC("SetInit", RpcTarget.AllBuffered, pos);
+        }
+
         inputManager = GetComponent<InputManager>();
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = centerOfMess.transform.localPosition;
+
+        if (photonView.IsMine) 
+            cameraRig.SetActive(true);
+        else 
+            cameraRig.SetActive(false);
     }
 
     private void FixedUpdate()
     {
-        animateWheels();
-        SteerVehicle();
-        AddDownForce();
-        //GetFriction();
-        GearShifter();
-        CalculateEnginePower();
+        if (photonView.IsMine)
+        {
+            animateWheels();
+            SteerVehicle();
+            AddDownForce();
+            //GetFriction();
+            GearShifter();
+            CalculateEnginePower();
+        }
+        else
+        { 
+            transform.position = Vector3.Lerp(transform.position, otherCarPos, 0.2f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, otherCarRot, 0.2f);
+        }
+
+
     }
 
     void CalculateEnginePower()
@@ -250,4 +278,10 @@ public class CarController : MonoBehaviourPun, IPunObservable
     }
 
     
+    [PunRPC]
+    void SetInit(Vector3 pos)
+    {
+        transform.position = pos;
+        childrenParent.SetActive(true);
+    }
 }
