@@ -38,6 +38,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
 
     InputManager inputManager;
     Rigidbody rb;
+    public WheelController wheelControl;
 
     // Æ÷Åæ°ü·Ã
     public GameObject cameraRig;
@@ -45,6 +46,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
     Quaternion otherCarRot;
 
     public GameObject childrenParent;
+    
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -68,7 +70,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
         if(PhotonNetwork.IsMasterClient)
         {
             Vector3 pos = GameManager.instance.GetEmptyStartPos();
-            photonView.RPC("SetInit", RpcTarget.AllBuffered, pos);
+            photonView.RPC(nameof(SetInit), RpcTarget.AllBuffered, pos);
         }
 
         inputManager = GetComponent<InputManager>();
@@ -97,15 +99,13 @@ public class CarController : MonoBehaviourPun, IPunObservable
             transform.position = Vector3.Lerp(transform.position, otherCarPos, 0.2f);
             transform.rotation = Quaternion.Lerp(transform.rotation, otherCarRot, 0.2f);
         }
-
-
     }
 
     void CalculateEnginePower()
     {
         WheelRPM();
 
-        if (inputManager.handleGrabed)
+        if (wheelControl.leftHandOnWheel || wheelControl.rightHandOnWheel)
         {
             // vr
             totalPower = enginePower.Evaluate(engineRPM) * gears[gearNum] * inputManager.ovrAccel;
@@ -202,37 +202,47 @@ public class CarController : MonoBehaviourPun, IPunObservable
 
         if (inputManager.steer > 0 || inputManager.ovrSteer > 0) 
         {
-            wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.steer;
-            wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.steer;
-
             // vr input
-            if (inputManager.handleGrabed)
+            if (wheelControl.leftHandOnWheel || wheelControl.rightHandOnWheel)
             {
                 wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.ovrSteer;
                 wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.ovrSteer;
             }
+            else
+            {
+                wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.steer;
+                wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.steer;
+                AnimateSteerWheel(wheelCollider[0].steerAngle);
+            }
 
-            AnimateSteerWheel(wheelCollider[0].steerAngle);
+            
         }
         else if (inputManager.steer < 0 || inputManager.ovrSteer < 0) // ¿ÞÂÊ È¸Àü
         {
-            wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.steer;
-            wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.steer;
+            
 
             // vr input
-            if (inputManager.handleGrabed)
+            if (wheelControl.leftHandOnWheel || wheelControl.rightHandOnWheel)
             {
                 wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.ovrSteer;
                 wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.ovrSteer;
             }
+            else
+            {
+                wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.steer;
+                wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.steer;
+                AnimateSteerWheel(wheelCollider[1].steerAngle);
+            }
 
-            AnimateSteerWheel(wheelCollider[1].steerAngle);
         }
         else
         {
-            wheelCollider[0].steerAngle = 0;
-            wheelCollider[1].steerAngle = 0;
-            AnimateSteerWheel(wheelCollider[0].steerAngle);
+            if (!wheelControl.leftHandOnWheel || !wheelControl.rightHandOnWheel)
+            {
+                wheelCollider[0].steerAngle = 0;
+                wheelCollider[1].steerAngle = 0;
+                AnimateSteerWheel(wheelCollider[0].steerAngle);
+            }
         }
 
         //for (int i = 0; i < wheelCollider.Length - 2; i++)

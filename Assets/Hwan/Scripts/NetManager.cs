@@ -14,7 +14,7 @@ public class NetManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
         PhotonNetwork.AutomaticallySyncScene = true;
 
-        Screen.SetResolution(960, 640, FullScreenMode.Windowed);
+        Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
 
         PhotonNetwork.SendRate = 60;
         PhotonNetwork.SerializationRate = 60;

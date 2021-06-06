@@ -18,11 +18,12 @@ public class InputManager : MonoBehaviour
     public float ovrSteer;
     public bool ovrBrake;
     public bool ovrBoost;
-    public bool handleGrabed;
+    //public bool handleGrabed;
 
-    float wheelSpeed = 4f;
-    Transform gripedSteer;
-    public Transform gripedSteerRight;
+    //float wheelSpeed = 4f;
+    
+    public GameObject steerWheel;
+   
 
     private void FixedUpdate()
     {
@@ -32,11 +33,16 @@ public class InputManager : MonoBehaviour
         boost = Input.GetKey(KeyCode.Alpha1);
 
         ovrAccel = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.RTouch);
-        ovrSteer = -ovrRightHand.transform.localPosition.y * wheelSpeed; 
+
+        //ovrSteer = -ovrRightHand.transform.localPosition.y * wheelSpeed; 
+        ovrSteer = steerWheel.transform.rotation.z * 1.8f;
+        print(ovrSteer);
+       
         ovrBrake = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.LTouch) != 0 ? true : false;
         ovrBoost = OVRInput.Get(OVRInput.Button.One);
 
-        GripSteering();
+        //GripSteering();
+        
     }
 
     public void GripSteering()
@@ -48,20 +54,17 @@ public class InputManager : MonoBehaviour
             Collider[] hits = Physics.OverlapSphere(ovrRightHand.transform.position, 0.005f, layer);
             
             if (hits.Length > 0)
-            {
-                print("핸들잡음");
-                handleGrabed = true;
-               
+            { 
                 ovrRightHand.transform.SetParent(SteeringWheel.transform);
                 ovrLeftHand.transform.SetParent(SteeringWheel.transform);
             }
         }
         else
-        {
-            print("핸들놓음");
-            handleGrabed = false;
+        {  
             ovrRightHand.transform.SetParent(originParent.transform);
             ovrLeftHand.transform.SetParent(originParent.transform);
         }
     }
+
+    
 }
