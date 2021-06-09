@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
-
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager instance;
+    public GameObject startSignal;
 
     public Transform[] startPos;
     public bool[] isEmpty;
+    public bool isStart;
+
     int emptyIndex;
+    int playerCount;
 
     private void Awake()
     {
@@ -22,6 +27,19 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         isEmpty = new bool[startPos.Length];
+    }
+
+    private void Update()
+    {  
+        playerCount = PhotonNetwork.PlayerList.Length;
+
+        if (playerCount == 2
+            || Input.GetKeyDown(KeyCode.Alpha3)
+            || OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.LTouch))
+        {
+            startSignal.SetActive(true);
+            
+        }
     }
 
     public Vector3 GetEmptyStartPos()
@@ -40,5 +58,4 @@ public class GameManager : MonoBehaviour
         emptyIndex++;
         return startPos[n].position;
     }
-
 }

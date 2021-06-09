@@ -23,7 +23,8 @@ public class InputManager : MonoBehaviour
     //float wheelSpeed = 4f;
     
     public GameObject steerWheel;
-   
+
+    float angle;
 
     private void FixedUpdate()
     {
@@ -35,8 +36,11 @@ public class InputManager : MonoBehaviour
         ovrAccel = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.RTouch);
 
         //ovrSteer = -ovrRightHand.transform.localPosition.y * wheelSpeed; 
-        ovrSteer = steerWheel.transform.rotation.z * 1.8f;
-        print(ovrSteer);
+        //ovrSteer = Mathf.Clamp(ovrSteer, -1, 1);
+        //ovrSteer = steerWheel.transform.eulerAngles.z * Mathf.Deg2Rad;
+        ovrSteer = OvrAccelSetting();
+
+        //print(ovrSteer);
        
         ovrBrake = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.LTouch) != 0 ? true : false;
         ovrBoost = OVRInput.Get(OVRInput.Button.One);
@@ -45,26 +49,46 @@ public class InputManager : MonoBehaviour
         
     }
 
-    public void GripSteering()
+    float OvrAccelSetting()
     {
-        if (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, OVRInput.Controller.RTouch) != 0)
+
+        float angle = steerWheel.transform.eulerAngles.z;// * Mathf.Deg2Rad;
+        
+        //if (angle < -360)
+        //{
+        //    angle += 360;
+        //}
+
+        //angle *= Mathf.Deg2Rad;
+
+        if(0 < angle && angle <= 180)
         {
-            print("´©¸§");
-            int layer = 1 << LayerMask.NameToLayer("Steer");
-            Collider[] hits = Physics.OverlapSphere(ovrRightHand.transform.position, 0.005f, layer);
-            
-            if (hits.Length > 0)
-            { 
-                ovrRightHand.transform.SetParent(SteeringWheel.transform);
-                ovrLeftHand.transform.SetParent(SteeringWheel.transform);
-            }
+            //print(angle);
+            return -(angle / 2)  * Mathf.Deg2Rad;
+        }
+        else if(180 < angle && angle < 360)
+        {
+            angle = 360 - angle;
+            //print(angle);
+            return (angle / 2) * Mathf.Deg2Rad;
         }
         else
-        {  
-            ovrRightHand.transform.SetParent(originParent.transform);
-            ovrLeftHand.transform.SetParent(originParent.transform);
+        {
+            return 0;
         }
-    }
 
-    
+
+        //if (angle >= 0 && angle <= 2)
+        //{
+        //    return angle / 2 * -1;
+        //}
+        //else if (angle >= 4 && angle <= 6)
+        //{
+        //    return (6 - angle) / 2;
+        //}
+        //else
+        //{
+        //    return 0;
+        //}
+    }
 }

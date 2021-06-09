@@ -14,7 +14,8 @@ public class NetManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
         PhotonNetwork.AutomaticallySyncScene = true;
 
-        Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+        //Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+        Screen.SetResolution(960, 640, FullScreenMode.Windowed);
 
         PhotonNetwork.SendRate = 60;
         PhotonNetwork.SerializationRate = 60;
@@ -47,6 +48,7 @@ public class NetManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {   
         print("OnJoinedRoom");
+
         PhotonNetwork.Instantiate("Player", new Vector3(0, 1.2f, 0), Quaternion.identity);
         
     }

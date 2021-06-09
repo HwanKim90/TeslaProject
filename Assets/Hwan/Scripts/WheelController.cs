@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class WheelController : MonoBehaviour
+public class WheelController : MonoBehaviourPun
 {
     // ¿À¸¥¼Õ
     public GameObject rightHand;
-    Transform rightHandOriginParent;
+    public Transform rightHandOriginParent;
     public bool rightHandOnWheel = false;
 
     // ¿Þ¼Õ
     public GameObject leftHand;
-    Transform leftHandOriginParent;
+    public Transform leftHandOriginParent;
     public bool leftHandOnWheel = false;
 
     public Transform[] snapPositions;
@@ -19,8 +20,11 @@ public class WheelController : MonoBehaviour
 
     void Update()
     {
-        ConvertHandToWheel();
-        ReleaseHandOnWheel();
+        if (photonView.IsMine)
+        {
+            ConvertHandToWheel();
+            ReleaseHandOnWheel();
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -75,23 +79,24 @@ public class WheelController : MonoBehaviour
     {
         if (rightHandOnWheel == true && leftHandOnWheel == false)
         {
-            Quaternion newRot = Quaternion.Euler(0, 0, rightHandOriginParent.transform.rotation.eulerAngles.z);
-            transform.rotation = newRot;
-            transform.parent = transform;
+            Quaternion newRot = Quaternion.Euler(0, 0, rightHandOriginParent.transform.eulerAngles.z);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, newRot, 0.3f);
+            //transform.parent = transform;
+            
         }
         else if(rightHandOnWheel == false && leftHandOnWheel == true)
         {
-            Quaternion newRot = Quaternion.Euler(0, 0, leftHandOriginParent.transform.rotation.eulerAngles.z);
-            transform.rotation = newRot;
-            transform.parent = transform;
+            Quaternion newRot = Quaternion.Euler(0, 0, leftHandOriginParent.transform.eulerAngles.z);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, newRot, 0.3f);
+            //transform.parent = transform;
         }
-        else
+        else if (rightHandOnWheel == true && leftHandOnWheel == true)
         {
-            Quaternion newRotRight = Quaternion.Euler(0, 0, rightHandOriginParent.transform.rotation.eulerAngles.z);
-            Quaternion newRotLeft = Quaternion.Euler(0, 0, leftHandOriginParent.transform.rotation.eulerAngles.z);
-            Quaternion finalRot = Quaternion.Slerp(newRotRight, newRotLeft, 0.5f);
-            transform.rotation = finalRot;
-            transform.parent = transform;
+            Quaternion newRotRight = Quaternion.Euler(0, 0, rightHandOriginParent.transform.eulerAngles.z);
+            Quaternion newRotLeft = Quaternion.Euler(0, 0, leftHandOriginParent.transform.eulerAngles.z);
+            Quaternion finalRot = Quaternion.Slerp(newRotRight, newRotLeft, 0.3f);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, finalRot, 0.3f);
+            //transform.parent = transform;
         }
     }
 

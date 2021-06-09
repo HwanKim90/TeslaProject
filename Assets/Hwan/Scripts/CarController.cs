@@ -173,7 +173,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
         // 브레이크
         if (inputManager.brake || inputManager.ovrBrake)
         {
-            for (int i = 0; i < wheelCollider.Length; i++)
+            for (int i = 2; i < wheelCollider.Length; i++)
             {
                 wheelCollider[i].brakeTorque = brakePower;
             }
@@ -194,11 +194,24 @@ public class CarController : MonoBehaviourPun, IPunObservable
         
     }
 
+
+    public float angle;
     void SteerVehicle()
     {
         // 애커먼 스티어링 공식
         // SteeringAngel = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * horizontalInput;
         // Rad2Deg 라디안 값을 각도로 변환해줌 ex) radian 값 * Mathf.Rad2Deg = 각도
+        //if(Input.GetKeyDown(KeyCode.Alpha0))
+        //{
+        //    angle++;
+        //}
+        //inputManager.ovrSteer = angle * Mathf.Deg2Rad;
+
+        //wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.ovrSteer;
+        //wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.ovrSteer;
+
+        //return;
+
 
         if (inputManager.steer > 0 || inputManager.ovrSteer > 0) 
         {
@@ -207,6 +220,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
             {
                 wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.ovrSteer;
                 wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.ovrSteer;
+                //AnimateSteerWheel(wheelCollider[0].steerAngle);
             }
             else
             {
@@ -226,6 +240,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
             {
                 wheelCollider[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * inputManager.ovrSteer;
                 wheelCollider[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * inputManager.ovrSteer;
+                //AnimateSteerWheel(wheelCollider[1].steerAngle);
             }
             else
             {
@@ -237,7 +252,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
         }
         else
         {
-            if (!wheelControl.leftHandOnWheel || !wheelControl.rightHandOnWheel)
+            if (!wheelControl.leftHandOnWheel && !wheelControl.rightHandOnWheel)
             {
                 wheelCollider[0].steerAngle = 0;
                 wheelCollider[1].steerAngle = 0;
@@ -287,7 +302,6 @@ public class CarController : MonoBehaviourPun, IPunObservable
         }
     }
 
-    
     [PunRPC]
     void SetInit(Vector3 pos)
     {
