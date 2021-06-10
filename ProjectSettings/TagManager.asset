@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerHand
   - FinalLine
+  - FirstChecker
   layers:
   - Default
   - TransparentFX

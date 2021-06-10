@@ -16,7 +16,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
 
     public WheelCollider[] wheelCollider = new WheelCollider[4];
     public GameObject[] wheelMesh = new GameObject[4];
-    public float[] gears = new float[5];
+    //public float[] gears = new float[5];
     public GameObject centerOfMess;
     public GameObject steerWheel;
     float[] slips = new float[4];
@@ -26,7 +26,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
     public float KPH;
     public float wheelsRPM;
     public float engineRPM;
-    public int gearNum;
+    public int gearPower = 3;
 
     //public float torque = 200f;
     public float radius = 6f; // 애커먼 장토식 회전각도
@@ -90,8 +90,6 @@ public class CarController : MonoBehaviourPun, IPunObservable
             animateWheels();
             SteerVehicle();
             AddDownForce();
-            //GetFriction();
-            GearShifter();
             CalculateEnginePower();
         }
         else
@@ -105,19 +103,24 @@ public class CarController : MonoBehaviourPun, IPunObservable
     {
         WheelRPM();
 
+        
+
         if (wheelControl.leftHandOnWheel || wheelControl.rightHandOnWheel)
         {
             // vr
-            totalPower = enginePower.Evaluate(engineRPM) * gears[gearNum] * inputManager.ovrAccel;
+            totalPower = enginePower.Evaluate(engineRPM) * gearPower * inputManager.ovrAccel;
         }
         else
         {
             // 키보드
-            totalPower = enginePower.Evaluate(engineRPM) * gears[gearNum] * inputManager.accel;
+            totalPower = enginePower.Evaluate(engineRPM) * gearPower * inputManager.accel;
         }
 
         float velocity = 0.0f;
-        engineRPM = Mathf.SmoothDamp(engineRPM, Mathf.Abs(wheelsRPM) * 3.6f * gears[gearNum], ref velocity, smoothTime);
+        engineRPM = Mathf.SmoothDamp(engineRPM, Mathf.Abs(wheelsRPM) * 0.3f * gearPower, ref velocity, smoothTime);
+
+        if (GameManager.instance.isStart == false)
+            return;
 
         MoveVehicle();
     }
@@ -134,13 +137,6 @@ public class CarController : MonoBehaviourPun, IPunObservable
         }
         wheelsRPM = (R != 0) ? sum / R : 0;
         
-    }
-
-    void GearShifter()
-    {
-        gearNum = Mathf.Clamp(gearNum, 0, 4);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) gearNum++;
-        if (Input.GetKeyDown(KeyCode.Alpha3)) gearNum--;
     }
 
     public void MoveVehicle()

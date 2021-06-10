@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager instance;
     public GameObject startSignal;
+    public AudioSource startSound;
 
     public Transform[] startPos;
     public bool[] isEmpty;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     void Start()
     {
         isEmpty = new bool[startPos.Length];
+        
     }
 
     private void Update()
@@ -38,8 +40,20 @@ public class GameManager : MonoBehaviourPunCallbacks
             || OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.LTouch))
         {
             startSignal.SetActive(true);
-            
+            StartCoroutine(delyOneSec());
         }
+
+        if (startSignal.GetComponent<StartSignal>().greenNum >= 5)
+        {
+
+            isStart = true;
+        }
+    }
+
+    IEnumerator delyOneSec()
+    {
+        yield return new WaitForSeconds(1.2f);
+        startSound.Play();
     }
 
     public Vector3 GetEmptyStartPos()

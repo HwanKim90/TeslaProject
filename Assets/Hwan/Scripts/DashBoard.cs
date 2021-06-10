@@ -39,7 +39,7 @@ public class DashBoard : MonoBehaviour
     void UpdateRPMNeedle()
     {
         currPositonRN = startPostionRN - endPositionRN;
-        float temp = carController.engineRPM / 10000;
+        float temp = carController.engineRPM / 1000000;
         RPMNeedle.transform.localEulerAngles = new Vector3(0, 0, startPostionRN - temp * currPositonRN);
     }
 }
