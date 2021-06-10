@@ -72,4 +72,5 @@ public class GameManager : MonoBehaviourPunCallbacks
         emptyIndex++;
         return startPos[n].position;
     }
+
 }

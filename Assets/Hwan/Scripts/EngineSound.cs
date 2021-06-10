@@ -39,72 +39,31 @@ public class EngineSound : MonoBehaviour
             idleSound.volume = Mathf.Lerp(startVolume, maxVolume, cc.KPH / 30);
             idleSound.pitch = Mathf.Lerp(startPitch, maxPitch, cc.KPH / 30);
 
-            
-            madSound.volume = 0;
-            lowSound.volume = 0;
-            hignSound.volume = 0;
-            MaxSound.volume = 0;
-
         }
-
-        if (cc.KPH >= 35 && cc.KPH <= 60)
+        else if (cc.KPH >= 35 && cc.KPH <= 60)
         {
             lowSound.volume = Mathf.Lerp(startVolume, maxVolume, cc.KPH / 80);
             lowSound.pitch = Mathf.Lerp(startPitch, maxPitch, cc.KPH / 80);
-
-            idleSound.volume = 0;
-            madSound.volume = 0;
-
-            hignSound.volume = 0;
-            MaxSound.volume = 0;
         }
-
-        if (cc.KPH >= 65 && cc.KPH <= 80)
+        else if (cc.KPH >= 65 && cc.KPH <= 80)
         {
             madSound.volume = Mathf.Lerp(startVolume, maxVolume, cc.KPH / 60);
             madSound.pitch = Mathf.Lerp(startPitch, maxPitch, cc.KPH / 60);
-
-            idleSound.volume = 0;
-
-            lowSound.volume = 0;
-            hignSound.volume = 0;
-            MaxSound.volume = 0;
         }
-
-        if (cc.KPH >= 85 && cc.KPH <= 100)
+        else if (cc.KPH >= 85 && cc.KPH <= 100)
         {
             hignSound.volume = Mathf.Lerp(startVolume, maxVolume, cc.KPH / 100);
             hignSound.pitch = Mathf.Lerp(startPitch, maxPitch, cc.KPH / 100);
-
-            idleSound.volume = 0;
-            madSound.volume = 0;
-            lowSound.volume = 0;
-            
-            MaxSound.volume = 0;
         }
-
-        if (cc.KPH >= 105 && cc.KPH <= 130)
+        else if (cc.KPH >= 105 && cc.KPH <= 130)
         {
             hignSound.volume = Mathf.Lerp(startVolume, maxVolume, cc.KPH / 100);
             hignSound.pitch = Mathf.Lerp(maxPitch, 2, cc.KPH / 100);
-
-            idleSound.volume = 0;
-            madSound.volume = 0;
-            lowSound.volume = 0;
-            
-            MaxSound.volume = 0;
         }
-
-        if (cc.KPH >= 135 )
+        else if (cc.KPH >= 135 )
         {
             MaxSound.volume = Mathf.Lerp(startVolume, maxVolume, cc.KPH / 180);
             MaxSound.pitch = Mathf.Lerp(startPitch, maxPitch, cc.KPH / 180);
-
-            idleSound.volume = 0;
-            madSound.volume = 0;
-            lowSound.volume = 0;
-            hignSound.volume = 0;
-           
         }
     }
 }
