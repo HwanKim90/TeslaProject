@@ -3036,7 +3036,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 375
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 58255d7d8c5eb2c45b651a2fd631995c, type: 2}
   m_TargetDisplay: 0
@@ -18939,7 +18939,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 375
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -19148,7 +19148,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 375
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -19222,7 +19222,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 375
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -19783,7 +19783,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 375
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 0a1ccc2c5b7cbab458c7476ddcd563be, type: 2}
   m_TargetDisplay: 0
@@ -22261,7 +22261,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 375
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 3ec70042dca9e734ca0be83daf9bf84c, type: 2}
   m_TargetDisplay: 0
@@ -22353,7 +22353,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0.49803922}
+  m_BackGroundColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -22419,17 +22419,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8837133002020875327}
-  m_LocalRotation: {x: 0.47439548, y: 0, z: 0, w: 0.88031185}
-  m_LocalPosition: {x: 0, y: 0, z: 4.41}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.51354116, y: 0, z: 0, w: 0.85806495}
+  m_LocalPosition: {x: 0, y: 0, z: 4.4844}
+  m_LocalScale: {x: 0.9639898, y: 0.7121418, z: 0.88757}
   m_Children: []
   m_Father: {fileID: 7298004515417005139}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 56.64, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 61.8, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -8.65}
-  m_SizeDelta: {x: 1, y: 2}
+  m_AnchoredPosition: {x: 0, y: -8.748}
+  m_SizeDelta: {x: 1, y: 2.1096}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8837133002020875322
 CanvasRenderer:
