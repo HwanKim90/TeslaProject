@@ -33,8 +33,10 @@ public class CarController : MonoBehaviourPun, IPunObservable
     public float downForce = 50f;
     public float brakePower = 10000f;
     public float boostPower = 1000f;
+    public int gearNum = 0;
     //public float steerMaxRot = 10f;
     float smoothTime = 0.01f;
+    int rpmLight = 9;
 
     InputManager inputManager;
     Rigidbody rb;
@@ -102,22 +104,23 @@ public class CarController : MonoBehaviourPun, IPunObservable
     void CalculateEnginePower()
     {
         WheelRPM();
-
-        
+        //engineRPM = 
 
         if (wheelControl.leftHandOnWheel || wheelControl.rightHandOnWheel)
         {
             // vr
-            totalPower = enginePower.Evaluate(engineRPM) * gearPower * inputManager.ovrAccel;
+            //totalPower = enginePower.Evaluate(engineRPM) * gearPower * inputManager.ovrAccel;
+            //totalPower = 
         }
         else
         {
+            AutoTransMission();
             // 키보드
-            totalPower = enginePower.Evaluate(engineRPM) * gearPower * inputManager.accel;
+            //totalPower = enginePower.Evaluate(engineRPM) * gearPower * inputManager.accel;
         }
 
-        float velocity = 0.0f;
-        engineRPM = Mathf.SmoothDamp(engineRPM, Mathf.Abs(wheelsRPM) * 0.3f * gearPower, ref velocity, smoothTime);
+        //float velocity = 0.0f;
+        //engineRPM = Mathf.SmoothDamp(engineRPM, Mathf.Abs(wheelsRPM) * 0.03f * gearPower, ref velocity, smoothTime);
 
         if (GameManager.instance.isStart == false)
             return;
@@ -125,17 +128,61 @@ public class CarController : MonoBehaviourPun, IPunObservable
         MoveVehicle();
     }
 
+    void AutoTransMission()
+    {
+        if (wheelsRPM >= 0 && wheelsRPM < 2000)
+        {
+            gearNum = 1;
+            engineRPM = wheelsRPM / 2000; // 30% 60%
+            totalPower =  1000 * inputManager.accel;
+
+        }
+        else if (wheelsRPM >= 2000 && wheelsRPM < 6000)
+        {
+            gearNum = 2;
+            engineRPM = wheelsRPM / 6000;
+            totalPower = 1300 * inputManager.accel;
+        }
+        else if (wheelsRPM >= 6000 && wheelsRPM < 12000)
+        {
+            gearNum = 3;
+            engineRPM = wheelsRPM / 12000;
+            totalPower = 2000 * inputManager.accel;
+        }
+        else if (wheelsRPM >= 12000 && wheelsRPM < 21000)
+        {
+            gearNum = 4;
+            engineRPM = wheelsRPM / 21000;
+            totalPower = 3000 * inputManager.accel;
+        }
+        else if (wheelsRPM >= 21000 && wheelsRPM < 34000)
+        {
+            gearNum = 5;
+            engineRPM = wheelsRPM / 34000;
+            totalPower = 10000 * inputManager.accel;
+        }
+        else if (wheelsRPM >= 34000 && wheelsRPM < 48000)
+        {
+            gearNum = 6;
+            engineRPM = wheelsRPM / 48000;
+            totalPower = 20000 * inputManager.accel;
+        } 
+        else
+        {
+            gearNum = 7;
+            totalPower = 40000 * inputManager.accel;
+        }
+        
+    }
+
     void WheelRPM()
     {
         float sum = 0f;
-        int R = 0;
-
         for (int i = 0; i < wheelCollider.Length; i++)
         {
             sum += wheelCollider[i].rpm;
-            R++;
         }
-        wheelsRPM = (R != 0) ? sum / R : 0;
+        wheelsRPM = sum / 4;
         
     }
 
@@ -160,10 +207,10 @@ public class CarController : MonoBehaviourPun, IPunObservable
         }
         else 
         {
-            for (int i = 0; i < wheelCollider.Length - 2; i++)
-            {
-                wheelCollider[i].motorTorque = totalPower / 2;
-            }
+            print("전륜");
+            wheelCollider[0].motorTorque = totalPower * 4;
+            wheelCollider[1].motorTorque = totalPower * 4;
+
         }
 
         // 브레이크

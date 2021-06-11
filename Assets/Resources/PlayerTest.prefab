@@ -3621,7 +3621,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 2
+    m_Stiffness: 2.5
   m_Enabled: 1
 --- !u!1 &2339897245145534497
 GameObject:
@@ -9875,7 +9875,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 2
+    m_Stiffness: 2.5
   m_Enabled: 1
 --- !u!1 &2340141203217953865
 GameObject:
@@ -12808,7 +12808,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 2
+    m_Stiffness: 2.5
   m_Enabled: 1
 --- !u!1 &2340700522359370971
 GameObject:
@@ -13209,7 +13209,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 2
+    m_Stiffness: 2.5
   m_Enabled: 1
 --- !u!1 &2340715176552717521
 GameObject:
@@ -13423,7 +13423,7 @@ GameObject:
   - component: {fileID: 8818174610038887425}
   - component: {fileID: 7842482165531902318}
   m_Layer: 0
-  m_Name: Player
+  m_Name: PlayerTest
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13618,7 +13618,6 @@ MonoBehaviour:
   downForce: 50
   brakePower: 1000000
   boostPower: 10000
-  gearNum: 0
   wheelControl: {fileID: 8492826500244881602}
   cameraRig: {fileID: 3901092933181907051}
   childrenParent: {fileID: 2339809558957949545}
