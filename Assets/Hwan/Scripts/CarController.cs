@@ -134,7 +134,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
         {
             gearNum = 1;
             engineRPM = wheelsRPM / 2000; // 30% 60%
-            totalPower =  1000 * inputManager.accel;
+            totalPower = 1000 * inputManager.accel;
 
         }
         else if (wheelsRPM >= 2000 && wheelsRPM < 6000)
