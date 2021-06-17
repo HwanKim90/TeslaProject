@@ -36,7 +36,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
     public int gearNum = 0;
     //public float steerMaxRot = 10f;
     float smoothTime = 0.01f;
-    int rpmLight = 9;
+
 
     InputManager inputManager;
     Rigidbody rb;
@@ -44,8 +44,12 @@ public class CarController : MonoBehaviourPun, IPunObservable
 
     // 포톤관련
     public GameObject cameraRig;
+    
     Vector3 otherCarPos;
     Quaternion otherCarRot;
+    
+
+    float otherTimer;
 
     public GameObject childrenParent;
     
@@ -56,19 +60,19 @@ public class CarController : MonoBehaviourPun, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+            stream.SendNext(GetComponent<TimeRecord>().bestTime);
         }
 
         if (stream.IsReading)
         {
             otherCarPos = (Vector3)stream.ReceiveNext();
             otherCarRot = (Quaternion)stream.ReceiveNext();
+            otherTimer = (float)stream.ReceiveNext();
         }
     }
 
     void Start()
     {
-        //마스터에서만!!
-        //포지션 얻어오기
         if(PhotonNetwork.IsMasterClient)
         {
             Vector3 pos = GameManager.instance.GetEmptyStartPos();
@@ -79,10 +83,7 @@ public class CarController : MonoBehaviourPun, IPunObservable
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = centerOfMess.transform.localPosition;
 
-        if (photonView.IsMine) 
-            cameraRig.SetActive(true);
-        else 
-            cameraRig.SetActive(false);
+        cameraRig.SetActive(photonView.IsMine);
     }
 
     private void FixedUpdate()
@@ -104,75 +105,26 @@ public class CarController : MonoBehaviourPun, IPunObservable
     void CalculateEnginePower()
     {
         WheelRPM();
-        //engineRPM = 
 
         if (wheelControl.leftHandOnWheel || wheelControl.rightHandOnWheel)
         {
             // vr
-            //totalPower = enginePower.Evaluate(engineRPM) * gearPower * inputManager.ovrAccel;
-            //totalPower = 
+            totalPower = enginePower.Evaluate(engineRPM) * gearPower * inputManager.ovrAccel;
         }
         else
         {
-            AutoTransMission();
+            //AutoTransMission();
             // 키보드
-            //totalPower = enginePower.Evaluate(engineRPM) * gearPower * inputManager.accel;
+            totalPower = enginePower.Evaluate(engineRPM) * gearPower * inputManager.accel;
         }
 
-        //float velocity = 0.0f;
-        //engineRPM = Mathf.SmoothDamp(engineRPM, Mathf.Abs(wheelsRPM) * 0.03f * gearPower, ref velocity, smoothTime);
+        float velocity = 0.0f;
+        engineRPM = Mathf.SmoothDamp(engineRPM, Mathf.Abs(wheelsRPM) * 0.03f * gearPower, ref velocity, smoothTime);
 
         if (GameManager.instance.isStart == false)
             return;
 
         MoveVehicle();
-    }
-
-    void AutoTransMission()
-    {
-        if (wheelsRPM >= 0 && wheelsRPM < 2000)
-        {
-            gearNum = 1;
-            engineRPM = wheelsRPM / 2000; // 30% 60%
-            totalPower = 1000 * inputManager.accel;
-
-        }
-        else if (wheelsRPM >= 2000 && wheelsRPM < 6000)
-        {
-            gearNum = 2;
-            engineRPM = wheelsRPM / 6000;
-            totalPower = 1300 * inputManager.accel;
-        }
-        else if (wheelsRPM >= 6000 && wheelsRPM < 12000)
-        {
-            gearNum = 3;
-            engineRPM = wheelsRPM / 12000;
-            totalPower = 2000 * inputManager.accel;
-        }
-        else if (wheelsRPM >= 12000 && wheelsRPM < 21000)
-        {
-            gearNum = 4;
-            engineRPM = wheelsRPM / 21000;
-            totalPower = 3000 * inputManager.accel;
-        }
-        else if (wheelsRPM >= 21000 && wheelsRPM < 34000)
-        {
-            gearNum = 5;
-            engineRPM = wheelsRPM / 34000;
-            totalPower = 10000 * inputManager.accel;
-        }
-        else if (wheelsRPM >= 34000 && wheelsRPM < 48000)
-        {
-            gearNum = 6;
-            engineRPM = wheelsRPM / 48000;
-            totalPower = 20000 * inputManager.accel;
-        } 
-        else
-        {
-            gearNum = 7;
-            totalPower = 40000 * inputManager.accel;
-        }
-        
     }
 
     void WheelRPM()

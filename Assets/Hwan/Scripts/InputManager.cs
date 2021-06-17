@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class InputManager : MonoBehaviour
+public class InputManager : MonoBehaviourPun
 {
     public GameObject ovrRightHand;
     public GameObject ovrLeftHand;
@@ -23,30 +24,35 @@ public class InputManager : MonoBehaviour
     //float wheelSpeed = 4f;
     
     public GameObject steerWheel;
+    PhotonView pv;
 
-    float angle;
+    //float angle;
+
+    void Start()
+    {
+        pv = GetComponent<PhotonView>();
+    }
 
     private void FixedUpdate()
     {
-        accel = Input.GetAxis("Vertical");
-        steer = Input.GetAxis("Horizontal");
-        brake = Input.GetAxis("Jump") != 0 ? true : false;
-        boost = Input.GetKey(KeyCode.Alpha1);
+        if (pv.IsMine)
+        {
+            accel = Input.GetAxis("Vertical");
+            steer = Input.GetAxis("Horizontal");
+            brake = Input.GetAxis("Jump") != 0 ? true : false;
+            boost = Input.GetKey(KeyCode.Alpha1);
 
-        ovrAccel = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.RTouch);
+            ovrAccel = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.RTouch);
+        
+            ovrSteer = OvrAccelSetting();
 
-        //ovrSteer = -ovrRightHand.transform.localPosition.y * wheelSpeed; 
-        //ovrSteer = Mathf.Clamp(ovrSteer, -1, 1);
-        //ovrSteer = steerWheel.transform.eulerAngles.z * Mathf.Deg2Rad;
-        ovrSteer = OvrAccelSetting();
-
-        //print(ovrSteer);
+            //print(ovrSteer);
        
-        ovrBrake = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.LTouch) != 0 ? true : false;
-        ovrBoost = OVRInput.Get(OVRInput.Button.One);
+            ovrBrake = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.LTouch) != 0 ? true : false;
+            ovrBoost = OVRInput.Get(OVRInput.Button.One);
+        }
 
         //GripSteering();
-        
     }
 
     float OvrAccelSetting()

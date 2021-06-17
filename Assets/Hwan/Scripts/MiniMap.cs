@@ -25,10 +25,4 @@ public class MiniMap : MonoBehaviour
         lr.startWidth = 20;
         lr.endWidth = 20;
     }
-
-    
-    void Update()
-    {
-        
-    }
 }

@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {  
         playerCount = PhotonNetwork.PlayerList.Length;
 
-        if (playerCount == 2
+        if (playerCount == 4
             || Input.GetKeyDown(KeyCode.Alpha3)
             || OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.LTouch))
         {
@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (startSignal.GetComponent<StartSignal>().greenNum >= 5)
         {
-
             isStart = true;
         }
     }

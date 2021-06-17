@@ -16,11 +16,12 @@ public class WheelController : MonoBehaviourPun
     public bool leftHandOnWheel = false;
 
     public Transform[] snapPositions;
+    public PhotonView pv;
     //public float currWheelRotation = 0;
 
     void Update()
     {
-        if (photonView.IsMine)
+        if (pv.IsMine)
         {
             ConvertHandToWheel();
             ReleaseHandOnWheel();
